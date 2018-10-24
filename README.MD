@@ -1,29 +1,4 @@
-
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package com.mycompany.monday;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-
-/**
- *
- * @author S530945
- */
-public class SeleniumMonday {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) throws InterruptedException {
-        // TODO code application logic here
-        //Include the chromedriver in the code
-        System.setProperty("webdriver.chrome.driver", "C:\\Software\\chromedriver.exe");
+System.setProperty("webdriver.chrome.driver", "C:\\Software\\chromedriver.exe");
 //Initialize variable for chrome driver
         WebDriver driver = new ChromeDriver();
 //Get the url of the application
@@ -113,3 +88,4 @@ public class SeleniumMonday {
 // Save the project and run
 
 }
+
