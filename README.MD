@@ -1,73 +1,115 @@
-//Include the chromedriver in the code
-System.setProperty("webdriver.chrome.driver","C:\\Software\\chromedriver.exe");
+
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.mycompany.monday;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+/**
+ *
+ * @author S530945
+ */
+public class SeleniumMonday {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) throws InterruptedException {
+        // TODO code application logic here
+        //Include the chromedriver in the code
+        System.setProperty("webdriver.chrome.driver", "C:\\Software\\chromedriver.exe");
 //Initialize variable for chrome driver
-WebDriver driver = new ChromeDriver();
+        WebDriver driver = new ChromeDriver();
 //Get the url of the application
-driver.get("http://localhost/selenium/action_page.php ");	
+        driver.get("http://localhost/selenium/action_page.php ");
 //Declare few variable which would be useful in the application.
-String inputNumber1 = "22";
-String inputNumber2 = "35";
-String inputNameField = "VipulC";
-int noOfCheckBoxes = 3;
+        String inputNameField = "Raechel";
+        String inputNumber1 = "15";
+        String inputNumber2 = "20";
+        String inputGender = "Female";
+
 // Enter the above declared values in the input fields. Find the input fields through xpath
-driver.findElement(By.xpath("/html/body/form/input[1]")).sendKeys(inputNameField);
-Thread.sleep(1000);
-driver.findElement(By.xpath("/html/body/form/input[2]")).sendKeys(inputNumber1);
-Thread.sleep(1000);
-driver.findElement(By.xpath("/html/body/form/input[3]")).sendKeys(inputNumber2);
-Thread.sleep(1000);
+        driver.findElement(By.xpath("/html/body/form/input[1]")).sendKeys(inputNameField);
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("/html/body/form/input[2]")).sendKeys(inputNumber1);
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("/html/body/form/input[3]")).sendKeys(inputNumber2);
+        Thread.sleep(1000);
+
+        String pathGender = "";
+        switch (inputGender) {
+
+            case "Male":
+                pathGender = "/html/body/form/input[4]";
+                break;
+            case "Female":
+                pathGender = "/html/body/form/input[5]";
+                break;
+            case "Others":
+                pathGender = "/html/body/form/input[6]";
+                break;
+        }
+        driver.findElement(By.xpath(pathGender)).click();
+        Thread.sleep(1000);
+
+//For input fields of radiobutton and checkbox
+        String pathFirstPart = "/html/body/form/input[";
+        String pathLastPart = "]";
+        int hobbyStart = 1;
+        int numberOfHobbySelected = 2;
 // Write a for loop to check all the boxes
-for(int i=1; i< noOfCheckBoxes; i++) {
-int specificXpath = 7+i;
-String pathFirstPart = "/html/body/form/input[";
-String pathLastPart = "]";
-String pathX = pathFirstPart +specificXpath+ pathLastPart;
-driver.findElement(By.xpath(pathX)).click();
-}
-Thread.sleep(1000);
+        for (int i = hobbyStart; i <= numberOfHobbySelected; i++) {
+            int specificXpath = 6 + i;
+            String pathX = pathFirstPart + specificXpath + pathLastPart;
+            driver.findElement(By.xpath(pathX)).click();
+        }
+        Thread.sleep(1000);
 
 //Click the submit button
-driver.findElement(By.xpath("/html/body/form/input[10]")).submit();
+        driver.findElement(By.xpath("/html/body/form/input[10]")).submit();
 // Get the content from the next page after clicking the submit button in the previous page
-Thread.sleep(1000);
-String content = driver.findElement(By.xpath("/html/body")).getText();
+        Thread.sleep(1000);
+        String content = driver.findElement(By.xpath("/html/body")).getText();
 //Test case 1 - Comparing the result of the sum
-// Get the value of the sum
-String actualValueString = content.substring(16, 18);
-actualValueString.trim();
-Integer tAct1 = Integer.valueOf(inputNumber1);
-Integer tAct2 = Integer.valueOf(inputNumber2);
-int expectedOutput = tAct1+tAct2;
-Integer actualOutput = Integer.valueOf(actualValueString);
+// Get the value of the sum from html
+        String actualValueString = content.substring(63, 65);
+        Integer actualOutput = Integer.valueOf(actualValueString);
+        
+//calculate value of sum from values entered
+        Integer tAct1 = Integer.valueOf(inputNumber1);
+        Integer tAct2 = Integer.valueOf(inputNumber2);
+        int expectedOutput = tAct1 + tAct2;
+
 // Compare the actual and expected outputs
-if(actualOutput == expectedOutput) {
-System.out.println("Sum of numbers is correct. Your test case is successful");
-}
-else {
-System.out.println("Sum of numbers is not correct. Your test case failed");
-}
+        if (actualOutput == expectedOutput) {
+            System.out.println("Sum of numbers is correct. Your test case is successful");
+        } else {
+            System.out.println("Sum of numbers is not correct. Your test case failed");
+        }
 //Test case 2 – Verifying the name displayed
-String outputName= content.substring(6, 9);
-if(inputNameField.equals(outputName))
-{
-System.out.println("Name printed is correct. Your test case is successful");
-}
-else
-{
-System.out.println("Test case failed for the Name");
-}
+        String outputName = content.substring(6, 9);
+        if (inputNameField.equals(outputName)) {
+            System.out.println("Name printed is correct. Your test case is successful");
+        } else {
+            System.out.println("Test case failed for the Name");
+        }
 //Test case 3 – Verifying the checkboxes are checked as expected
-String valFromNextPage = content.substring(72, 73);
-String valFromNextPage1 = valFromNextPage.trim();
-int intValue = Integer.parseInt(valFromNextPage1);
-if (noOfCheckBoxes == intValue) {
-System.out.println("Test case passed for hobbies count");
-}
-else
-{
-System.out.println("Test case failed for the hobbies count");
-}
+        String hobbiesFromNextPage = content.substring(content.length() - 1);
+
+        int intHobbiesFromNextPage = Integer.parseInt(hobbiesFromNextPage);
+        if (numberOfHobbySelected == intHobbiesFromNextPage) {
+            System.out.println("Test case passed for hobbies count");
+        } else {
+            System.out.println("Test case failed for the hobbies count");
+        }
 
     }
 // Save the project and run
 
+}
